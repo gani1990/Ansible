@@ -1,0 +1,33 @@
+---
+- name: deploy website into apache webserver
+  hosts: all
+  become: yes
+  vars:
+    web_package_name: apache2
+    unzip_package_name: unzip
+    download_url: https://www.free-css.com/assets/files/free-css-templates/download/page291/goind.zip
+  tasks:
+    - name: install apache2
+      ansible.builtin.apt:
+        name: "{{ web_package_name  }}"
+        update_cache: yes
+        state: present
+    - name: enable and ensure apache is started
+      ansible.builtin.systemd_service:
+        name: "{{ web_package_name  }}"
+        enabled: yes
+        state: started
+    - name: ensure unzip is installed
+      ansible.builtin.apt:
+        name: "{{ unzip_package_name }}"
+        state: present
+    - name: download and extract website
+      ansible.builtin.unarchive:
+        src: "{{ download_url }}"
+        dest: /tmp
+        remote_src: yes
+    - name: copy the html folder to naukri
+      ansible.builtin.copy:
+        src: /tmp/html/
+        dest: /var/www/html/naukri
+        remote_src: yes
