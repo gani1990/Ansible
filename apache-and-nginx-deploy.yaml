@@ -5,6 +5,7 @@
   vars:
     unzip_package_name: unzip
     download_url: https://www.free-css.com/assets/files/free-css-templates/download/page291/goind.zip
+
   tasks:
     - name: display the web package name
       ansible.builtin.debug:
@@ -37,3 +38,4 @@
 #write below hosts in host file
 # 172.31.4.82 web_package_name=nginx
 # localhost web_package_name=apache2
+
